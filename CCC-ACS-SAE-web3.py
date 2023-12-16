@@ -9,6 +9,7 @@ with open('xgb_plan3.dat', 'rb') as f:
     model = pickle.load(f)
 
 st.title('CCC-ACS In-hospital Major Serious Adverse Events Calculator')
+st.subheader('Estimates admission to in-hospital major serious adverse events (mortality, shock, cardiac arrest) for patients with acute coronary syndrome.')
 st.write('Estimates admission to in-hospital major serious adverse events (mortality, shock, cardiac arrest) for patients with acute coronary syndrome.\
          When to use\
          Patients with known acute coronary syndrome, to determine in-hospital major serious adverse events (mortality, shock, cardiac arrest) risk.\
