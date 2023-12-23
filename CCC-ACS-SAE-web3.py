@@ -5,22 +5,21 @@ import pickle
 import xgboost as xgb
 
 
-with open('xgb_plan3.dat', 'rb') as f:
+with open('rf_plan3.dat', 'rb') as f:
     model = pickle.load(f)
 
-st.title('CCC-ACS In-hospital Major Serious Adverse Events Calculator')
+st.title('CCC-ACS-SAE In-hospital Major Serious Adverse Events Calculator')
 st.subheader('Estimates admission to in-hospital major serious adverse events (mortality, shock, cardiac arrest) for patients with acute coronary syndrome.')
-st.write('Estimates admission to in-hospital major serious adverse events (mortality, shock, cardiac arrest) for patients with acute coronary syndrome.\
-         When to use\
-         Patients with known acute coronary syndrome, to determine in-hospital major serious adverse events (mortality, shock, cardiac arrest) risk.\
-         Pearls/Pitfalls\
-         The CCC-ACS-MSAE Score is a prospectively studied scoring system to risk stratifiy patients with diagnosed ACS to estimate their in-hospital major serious adverse events. The development of CCC-ACS-MSAE Score based on CCC-ACS project which included over 100,000 ACS patients and integrates various machine learning algorithms.\
-         Why use\
-         Many guidelines recommend more aggressive medical management for patients with a high in-hospital major serious adverse events risk (or even early invasive management for these patients). Knowing a patient’s risk early may help with management and prognostication/goals of care discussions with patient and family.\
-         A patient with detailed admission information can be more objectively risk stratified for their prognosis, quantify their risk, and potentially lead to shorter hospital stays, fewer inappropriate interventions, and more appropriate interventions.')
-
-
-age_input = st.selectbox('Age',('<55', '[55,65)', '[65,75)','≥75'))
+st.divider()
+st.header('Pearls/Pitfalls')
+st.write('The CCC-ACS-MSAE Score is a prospectively studied scoring system to risk stratifiy patients with diagnosed ACS to estimate their in-hospital major serious adverse events. The development of CCC-ACS-MSAE Score based on CCC-ACS project which included over 100,000 ACS patients and integrates various machine learning algorithms.')
+st.header('When to use')
+st.write('Patients with known acute coronary syndrome, to determine in-hospital major serious adverse events (mortality, shock, cardiac arrest) risk.')
+st.header('Why use')
+st.write('Many guidelines recommend more aggressive medical management for patients with a high in-hospital major serious adverse events risk (or even early invasive management for these patients). Knowing a patient’s risk early may help with management and prognostication/goals of care discussions with patient and family.')
+st.write('A patient with detailed admission information can be more objectively risk stratified for their prognosis, quantify their risk, and potentially lead to shorter hospital stays, fewer inappropriate interventions, and more appropriate interventions.')
+st.divider()
+age_input = st.selectbox('Age,years',('<55', '[55,65)', '[65,75)','≥75'))
 #gender_input = st.selectbox('Gender',('man', 'woman'))
 historyOfDiabetesMellitus_input = st.selectbox('History Of Diabetes Mellitus',('no', 'yes'))
 #historyOfMyocardialInfarction_input = st.selectbox('History Of Myocardial Infarction',('no', 'yes'))
@@ -65,24 +64,10 @@ killip_4 = np.where(killip_input=='Ⅳ',1,0)
 
 features = np.array([MHDM,MHKF,MACA,age_1,age_2,age_3,age_4,si_1,si_2,si_3,bmp_1,bmp_2,bmp_3,killip_1,killip_2,killip_3,killip_4]).reshape(1,-1)
 
-"""
-st.table(pd.DataFrame([{
-'Age':age_input,
-'Gender':gender_input,
-'History Of Diabetes Mellitus':historyOfDiabetesMellitus_input,
-'History Of Myocardial Infarction':historyOfMyocardialInfarction_input,
-'History Of Ischemic Stroke':historyOfIschemicStroke_input,
-'History Of Heart Failure':historyOfHeartFailure_input,
-'History Of COPD':historyOfCOPD_input,
-'History Of Renal Insufficiency':historyOfRenalInsufficiency_input,
-'Heart rate':heartRate_input,
-'Shock index':shockIndex_input,
-'Acute Failure On Admission':acuteFailureOnAdmission_input,
-'Cardiac Arrest On Admission':cardiacArrestOnAdmission_input,
-'ST Segment Change':stSegmentChange_input
-}]))  
-"""
-
 if st.button('Predict'):
-    prediction = model.predict_proba(features)[:,1]
-    st.write(' Based on feature values, your risk score is : '+ str(int(prediction * 100)))
+    col1, col2 = st.columns(2)
+    p = model.predict_proba(features)[:,1]*100
+    col1.metric("Score", int(p), )
+    #col2.metric("Probability of death from admission to 6 months", int(p), )
+    #prediction = model.predict_proba(features)[:,1]
+    #st.write(' Based on feature values, your risk score is : '+ str(int(prediction * 100)))
