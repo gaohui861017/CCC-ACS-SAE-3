@@ -66,8 +66,8 @@ features = np.array([MHDM,MHKF,MACA,age_1,age_2,age_3,age_4,bmp_1,bmp_2,bmp_3,si
 
 if st.button('Predict'):
     col1, col2 = st.columns(2)
-    p = model.predict_proba(features)[:,1]*100
-    col1.metric("Score", int(p), )
+    prob = model.predict_proba(features)[:,1]
+    col1.metric("Probability of serious adverse hospitalization events", round(prob,2), )
     #col2.metric("Probability of death from admission to 6 months", int(p), )
     #prediction = model.predict_proba(features)[:,1]
     #st.write(' Based on feature values, your risk score is : '+ str(int(prediction * 100)))
