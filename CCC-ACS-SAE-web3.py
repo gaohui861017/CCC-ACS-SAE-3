@@ -62,7 +62,7 @@ killip_4 = np.where(killip_input=='Ⅳ',1,0)
 
 #features = np.array([SEX,MHDM,MHMI,MHHF,zuzhong,MHCOPD,MHKF,MAHF,MACA,stc,age_1,age_2,age_3,age_4,si_1,si_2,si_3,bmp_1,bmp_2,bmp_3]).reshape(1,-1)
 
-features = np.array([MHDM,MHKF,MACA,age_1,age_2,age_3,age_4,si_1,si_2,si_3,bmp_1,bmp_2,bmp_3,killip_1,killip_2,killip_3,killip_4]).reshape(1,-1)
+features = np.array([MHDM,MHKF,MACA,age_1,age_2,age_3,age_4,bmp_1,bmp_2,bmp_3,si_1,si_2,si_3,killip_1,killip_2,killip_3,killip_4]).reshape(1,-1)
 
 if st.button('Predict'):
     col1, col2 = st.columns(2)
